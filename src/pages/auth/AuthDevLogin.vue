@@ -1,39 +1,63 @@
 <template>
-  <div class="container spaced">
-    <qas-page-header
-      title="Login"
-      :use-breadcrumbs="false"
-    />
+  <q-page class="auth-dev-login">
+    <header class="auth-dev-login__header">
+      <q-img
+        alt="Logo Nave"
+        class="auth-dev-login__logo"
+        src="../../assets/nave.svg"
+      />
+    </header>
 
-    <qas-header v-bind="headerProps" />
+    <div class="auth-dev-login__content q-py-xl flex align-center">
+      <div class="container-md row items-center justify-center">
+        <div
+          class="row full-width"
+          :class="contentClasses"
+        >
+          <div class="col-12 col-md-7 col-sm-8">
+            <q-img
+              class="full-width"
+              src="../../assets/login-avatar.svg"
+            />
+          </div>
+  
+          <div class="col-12 col-md-4 col-sm-8 column justify-center">
+            <div class="q-mb-md">
+              <h3 class="q-mb-sm">
+                Olá novamente :)
+              </h3>
+  
+              <div class="text-body1 text-grey-8">
+                Faça o login para continuar. É necessário que você esteja logado no ambiente de desenvolvimento.
+              </div>
+            </div>
+  
+            <div class="q-mt-md">
+              <div class="column q-gutter-y-md">
+                <qas-btn
+                  label="Login automático"
+                  variant="primary"
+                  icon="sym_r_open_in_new"
+                  @click="makeAutomaticLogin"
+                />
+  
+                <qas-btn
+                  label="Setar token manualmente"
+                  variant="secondary"
+                  @click="openTokenDialog"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <qas-input
-      v-model="accessToken"
-      class="full-width"
-      hint="Caso o prefixo '__q_strn|' seja adicionado, ele será removido internamente."
-      label="AccessToken"
-      type="textarea"
-    />
-
-    <qas-actions>
-      <template #primary>
-        <qas-btn
-          class="full-width"
-          label="Login automático"
-          variant="primary"
-          @click="makeAutomaticLogin"
-        />
+    <qas-dialog v-model="showTokenDialog" v-bind="dialogProps">
+      <template #description>
+        <qas-input v-model="tokenModel" label="Token"/>
       </template>
-
-      <template #secondary>
-        <qas-btn
-          class="full-width"
-          :disable="!accessToken"
-          label="Acessar"
-          @click="onSetAccessToken(normalizedAccessToken)"
-        />
-      </template>
-    </qas-actions>
+    </qas-dialog>
 
     <app-dev-login-dialog
       v-model="showDevLogoutDialog"
@@ -41,32 +65,23 @@
       :url="baseURL"
       @try-again="makeAutomaticLogin"
     />
-  </div>
+  </q-page>
 </template>
 
 <script setup>
-import { isLocalDevelopment } from 'asteroid'
-
 import hubConfig from '../../shared/default-hub-config'
 
 import AppDevLoginDialog from '../../components/AppDevLoginDialog.vue'
 
-import { useRoute, useRouter } from 'vue-router'
-import { computed, inject, onMounted, ref } from 'vue'
+import { useScreen, isLocalDevelopment } from 'asteroid'
+import { computed, ref, inject, onMounted } from 'vue'
 
-defineOptions({ name: 'HubDevLogin' })
+import { useRoute, useRouter } from 'vue-router'
+
+defineOptions({ name: 'AuthDevLogin' })
 
 // globals
 const qas = inject('qas')
-
-// composables
-const router = useRouter()
-const route = useRoute()
-
-const { showDevLogoutDialog, makeAutomaticLogin } = useAutomaticLogin()
-
-// refs
-const accessToken = ref('')
 
 // consts
 const { development } = hubConfig
@@ -76,29 +91,56 @@ const developmentMode = isLocalhost ? 'localhost' : 'preview'
 const { environment, url: baseURL } = development[developmentMode]
 const isDev = environment === 'development'
 
-const headerProps = {
-  description: (
-    `Para fazer login automático, é necessário já estar logado em ${isDev ? 'develop' : 'temporário'}.`
-  )
-}
+// composables
+const screen = useScreen()
+const router = useRouter()
+const route = useRoute()
+
+const { showDevLogoutDialog, makeAutomaticLogin } = useAutomaticLogin()
+
+// refs
+const showTokenDialog = ref(false)
+const tokenModel = ref('')
 
 // computeds
+const contentClasses = computed(() => {
+  if (screen.isLarge) return 'justify-between'
+
+  if (screen.isMedium) return 'justify-center q-col-gutter-y-3xl'
+
+  return 'q-col-gutter-y-3xl'
+})
+
+const dialogProps = computed(() => {
+  return {
+    title: 'Setar token manualmente',
+
+    ok: {
+      label: 'Setar token',
+      onClick: () => onSetAccessToken(normalizedAccessToken.value)
+    },
+
+    onHide: () => {
+      tokenModel.value = ''
+    }
+  }
+})
+
+const normalizedAccessToken = computed(() => tokenModel.value.replace('__q_strn|', ''))
+
 const hasAccessToken = computed(() => qas.getGetter({ entity: 'hub', key: 'hasAccessToken' }))
 
-const normalizedAccessToken = computed(() => accessToken.value.replace('__q_strn|', ''))
-
+// hooks
 onMounted(() => {
   if (hasAccessToken.value) goToHome()
 })
 
 // functions
-function goToHome () {
-  router.replace('/')
+function openTokenDialog () {
+  showTokenDialog.value = true
 }
 
 function setAccessToken (token) {
-  accessToken.value = token
-
   qas.getAction({
     entity: 'hub',
     key: 'setAccessToken',
@@ -124,6 +166,10 @@ async function onSetAccessToken (token) {
 
   // Redireciona para a rota de origem
   router.push(resolvedRoute)
+}
+
+function goToHome () {
+  router.replace('/')
 }
 
 // composable definitions
@@ -171,3 +217,35 @@ function useAutomaticLogin () {
   }
 }
 </script>
+
+<style lang="scss">
+.auth-dev-login {
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    flex-shrink: 0;
+    padding-left: var(--qas-spacing-3xl);
+    padding-top: var(--qas-spacing-3xl);
+  }
+
+  &__logo {
+    max-width: 150px;
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  @media (max-width: $breakpoint-xs) {
+    &__header {
+      padding-left: var(--qas-spacing-lg);
+      padding-top: var(--qas-spacing-lg);
+    }
+
+    &__logo {
+      max-width: 124px;
+    }
+  }
+}
+</style>
