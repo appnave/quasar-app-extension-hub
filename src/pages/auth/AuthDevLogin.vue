@@ -22,42 +22,52 @@
           </div>
   
           <div class="col-12 col-md-4 col-sm-8 column justify-center">
-            <div class="q-mb-md">
-              <h3 class="q-mb-sm">
-                Olá novamente :)
-              </h3>
-  
-              <div class="text-body1 text-grey-8">
-                Faça o login para continuar. É necessário que você esteja logado no ambiente de desenvolvimento.
+            <template v-if="isManualTokenLogin">
+              <div class="q-mb-md text-body1 text-grey-8">
+                Informe o token para efetuar o login.
               </div>
-            </div>
-  
-            <div class="q-mt-md">
-              <div class="column q-gutter-y-md">
-                <qas-btn
-                  label="Login automático"
-                  variant="primary"
-                  icon="sym_r_open_in_new"
-                  @click="makeAutomaticLogin"
-                />
-  
-                <qas-btn
-                  label="Setar token manualmente"
-                  variant="secondary"
-                  @click="openTokenDialog"
-                />
+
+              <qas-input v-model="tokenModel" label="Token" icon="sym_r_key" />
+
+              <qas-btn
+                label="Inserir token"
+                variant="primary"
+                @click="onSetAccessToken(normalizedAccessToken)"
+              />
+            </template>
+
+            <template v-else>
+              <div class="q-mb-md">
+                <h3 class="q-mb-sm">
+                  Olá novamente :)
+                </h3>
+    
+                <div class="text-body1 text-grey-8">
+                  Faça o login para continuar. É necessário que você esteja logado no ambiente de desenvolvimento.
+                </div>
               </div>
-            </div>
+    
+              <div class="q-mt-md">
+                <div class="column q-gutter-y-md">
+                  <qas-btn
+                    label="Login automático"
+                    variant="primary"
+                    icon="sym_r_open_in_new"
+                    @click="makeAutomaticLogin"
+                  />
+    
+                  <qas-btn
+                    label="Inserir token manualmente"
+                    variant="secondary"
+                    @click="setManualTokenLogin"
+                  />
+                </div>
+              </div>
+            </template>
           </div>
         </div>
       </div>
     </div>
-
-    <qas-dialog v-model="showTokenDialog" v-bind="dialogProps">
-      <template #description>
-        <qas-input v-model="tokenModel" label="Token"/>
-      </template>
-    </qas-dialog>
 
     <app-dev-login-dialog
       v-model="showDevLogoutDialog"
@@ -99,7 +109,7 @@ const route = useRoute()
 const { showDevLogoutDialog, makeAutomaticLogin } = useAutomaticLogin()
 
 // refs
-const showTokenDialog = ref(false)
+const isManualTokenLogin = ref(false)
 const tokenModel = ref('')
 
 // computeds
@@ -109,21 +119,6 @@ const contentClasses = computed(() => {
   if (screen.isMedium) return 'justify-center q-col-gutter-y-3xl'
 
   return 'q-col-gutter-y-3xl'
-})
-
-const dialogProps = computed(() => {
-  return {
-    title: 'Setar token manualmente',
-
-    ok: {
-      label: 'Setar token',
-      onClick: () => onSetAccessToken(normalizedAccessToken.value)
-    },
-
-    onHide: () => {
-      tokenModel.value = ''
-    }
-  }
 })
 
 const normalizedAccessToken = computed(() => tokenModel.value.replace('__q_strn|', ''))
@@ -136,8 +131,8 @@ onMounted(() => {
 })
 
 // functions
-function openTokenDialog () {
-  showTokenDialog.value = true
+function setManualTokenLogin () {
+  isManualTokenLogin.value = true
 }
 
 function setAccessToken (token) {
