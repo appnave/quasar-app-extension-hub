@@ -1,5 +1,5 @@
 <template>
-  <q-page class="auth-dev-login">
+  <q-page class="auth-dev-login column">
     <header class="auth-dev-login__header">
       <q-img
         alt="Logo Nave"
@@ -220,9 +220,6 @@ function useAutomaticLogin () {
 
 <style lang="scss">
 .auth-dev-login {
-  display: flex;
-  flex-direction: column;
-
   &__header {
     flex-shrink: 0;
     padding-left: var(--qas-spacing-3xl);
