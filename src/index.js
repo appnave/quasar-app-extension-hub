@@ -47,7 +47,7 @@ module.exports = function (api) {
     )
 
     boots.forEach(boot => {
-      quasar.boot.push(`~@bildvitta/quasar-app-extension-hub/src/boot/${boot}.js`)
+      quasar.boot.push(`~@appnave/quasar-app-extension-hub/src/boot/${boot}.js`)
     })
 
     // Plugins
@@ -64,7 +64,7 @@ module.exports = function (api) {
 
   api.extendWebpack(webpack => {
     // Adiciona um "alias" chamado "hub" para a aplicação, necessário quando usar pinia
-    const hub = 'node_modules/@bildvitta/quasar-app-extension-hub/src/globals'
+    const hub = 'node_modules/@appnave/quasar-app-extension-hub/src/globals'
 
     webpack.resolve.alias = {
       ...webpack.resolve.alias,
