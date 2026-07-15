@@ -24,12 +24,18 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
 
   // a rota só é adicionada caso passe por todas as condições acima.
   router.addRoute({
-    name: 'AuthDevLogin',
-    path: '/auth/dev/login',
-    component: () => import('../pages/auth/AuthDevLogin.vue'),
-    meta: {
-      title: 'Login de desenvolvimento'
-    }
+    path: '/auth/dev',
+    component: () => import('../layouts/Hub.vue'),
+    children: [
+      {
+        name: 'AuthDevLogin',
+        path: 'login',
+        component: () => import('../pages/auth/AuthDevLogin.vue'),
+        meta: {
+          title: 'Login de desenvolvimento'
+        }
+      }
+    ]
   })
 
   router.beforeEach((to, _from, next) => {

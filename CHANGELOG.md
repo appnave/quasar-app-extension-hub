@@ -2,6 +2,13 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## 3.3.0
+### Modificado
+- Modificado página de `AuthDevLogin` pra ficar mais amigável.
+
+### Corrigido
+- Corrigido `auth-pinia` onde a instância da store da forma que estava causava um erro no console.
+
 ## 3.2.0 - 16-09-2025
 ## BREAKING CHANGES
 - Certifique-se que exista a env `ENVIRONMENT` setada com o valor `production` no ambiente de produção para não adicionar os recursos de login de desenvolvimento.
