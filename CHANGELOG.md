@@ -2,12 +2,28 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## 3.3.0
+## v3.4.0-beta.1
+- Modificado página de `AuthDevLogin` pra ficar mais amigável.
+
+### Corrigido
+- Corrigido `auth-pinia` onde a instância da store da forma que estava causava um erro no console.
+
+## v3.4.0-beta.0
+> **BROKEN** - Não utilizar. Lançada incorretamente a partir da `main`. Use `v3.4.0-beta.1`.
+
 ### Modificado
 - Modificado página de `AuthDevLogin` pra ficar mais amigável.
 
 ### Corrigido
 - Corrigido `auth-pinia` onde a instância da store da forma que estava causava um erro no console.
+
+## 3.3.0-beta.0
+### Adicionado
+- Adicionado suporte para vite.
+- Adiciono a store hub ao Pinia globalmente para não ser necessário fazer manual nos produtos, verificar e remover nos produtos caso exista.
+
+### Modificado
+- Modificações necessárias para adicionar suporte ao vite.
 
 ## 3.2.0 - 16-09-2025
 ## BREAKING CHANGES
