@@ -86,14 +86,14 @@ import {
   QasInput,
   QasBtn,
 
-  isLocalDevelopment
+  isLocalDevelopment,
+  useScreen
 } from 'asteroid'
 
 import hubConfig from '../../shared/default-hub-config'
 
 import AppDevLoginDialog from '../../components/AppDevLoginDialog.vue'
 
-import { QasInput, QasBtn, useScreen, isLocalDevelopment } from 'asteroid'
 import { computed, ref, inject, onMounted } from 'vue'
 
 import { useRoute, useRouter } from 'vue-router'
