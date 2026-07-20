@@ -79,6 +79,16 @@
 </template>
 
 <script setup>
+import {
+  QasActions,
+  QasHeader,
+  QasPageHeader,
+  QasInput,
+  QasBtn,
+
+  isLocalDevelopment
+} from 'asteroid'
+
 import hubConfig from '../../shared/default-hub-config'
 
 import AppDevLoginDialog from '../../components/AppDevLoginDialog.vue'
