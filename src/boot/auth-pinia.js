@@ -11,6 +11,8 @@ import {
 } from '../helpers/auth-boot.js'
 
 export default ({ router, app, Vue }) => {
+  const store = piniaHubStore()
+
   const { quasar } = getGlobalVariables({ app, Vue })
 
   // Adiciona a store hub ao Pinia globalmente
