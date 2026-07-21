@@ -14,8 +14,10 @@ export default ({ router, urlPath }) => {
  * Adiciona a rota de redirecionamento para o login de desenvolvimento.
  */
 function setRedirectURL ({ accessToken, router, urlPath }) {
+  const isProduction = process.env.ENVIRONMENT === 'production'
+
   // se não for localhost ou preview, ou se já tiver um accessToken, não faz nada.
-  if (!isLocalhostOrPreviewDomain() || accessToken) return
+  if (isProduction || accessToken) return
 
   const mode = isLocalDevelopment() ? 'localhost' : 'preview'
 
@@ -90,15 +92,4 @@ function handleAccessTokenRequest ({ accessToken }) {
      */
     window.opener.postMessage(payload, requestAccessTokenOrigin)
   }
-}
-
-/**
- * Preview de vercel ou cloudflare pages
- */
-function isPreviewDomain () {
-  const { hostname } = window.location
-
-  const previewDomains = ['.vercel.app', '.pages.dev']
-
-  return previewDomains.some(domain => hostname.endsWith(domain))
 }
