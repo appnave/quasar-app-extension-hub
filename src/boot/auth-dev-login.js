@@ -60,13 +60,11 @@ function handleAccessTokenRequest ({ accessToken }) {
   const envs = ['development', 'temporary']
 
   /**
-   * É apenas para ambientes de desenvolvimento e temporários e se a janela foi
-   * aberta por outra janela (window.opener) e não é localhost ou preview.
+   * É apenas para ambientes de desenvolvimento e temporários.
    */
   const hasRedirectRequestHandler = (
     envs.includes(process.env.ENVIRONMENT) &&
-    window.opener &&
-    !isLocalhostOrPreviewDomain()
+    window.opener
   )
 
   if (!hasRedirectRequestHandler) return
@@ -103,8 +101,4 @@ function isPreviewDomain () {
   const previewDomains = ['.vercel.app', '.pages.dev']
 
   return previewDomains.some(domain => hostname.endsWith(domain))
-}
-
-function isLocalhostOrPreviewDomain () {
-  return isLocalDevelopment() || isPreviewDomain()
 }

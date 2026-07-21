@@ -109,7 +109,6 @@ const { development } = hubConfig
 const isLocalhost = isLocalDevelopment()
 const developmentMode = isLocalhost ? 'localhost' : 'preview'
 const { environment, url: baseURL } = development[developmentMode]
-const isDev = environment === 'development'
 
 // composables
 const screen = useScreen()

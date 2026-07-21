@@ -4,6 +4,7 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 
 ## v3.4.0-beta.1
 - Modificado página de `AuthDevLogin` pra ficar mais amigável.
+- `auth-dev-login.js`: Modificado lógica para funcionar em ambientes locais e de preview.
 
 ### Corrigido
 - Corrigido `auth-pinia` onde a instância da store da forma que estava causava um erro no console.
