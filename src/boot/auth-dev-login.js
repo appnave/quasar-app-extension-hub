@@ -62,11 +62,14 @@ function handleAccessTokenRequest ({ accessToken }) {
   const envs = ['development', 'temporary']
 
   /**
-   * É apenas para ambientes de desenvolvimento e temporários.
+   * - É necessário ter a env "development" ou "temporary",
+   * - validar se a janela foi aberta por outra janela (window.opener),
+   * - se a url é localhost, domínio da nave(.nave.dev.br) ou domínio de preview (.pages.dev)
    */
   const hasRedirectRequestHandler = (
     envs.includes(process.env.ENVIRONMENT) &&
-    window.opener
+    window.opener &&
+    isValidDomain()
   )
 
   if (!hasRedirectRequestHandler) return
@@ -92,4 +95,19 @@ function handleAccessTokenRequest ({ accessToken }) {
      */
     window.opener.postMessage(payload, requestAccessTokenOrigin)
   }
+}
+
+/**
+ * Valida se é um domínio da nave ou ambiente de preview.
+ */
+function isNaveOrPreviewDomain () {
+  const { hostname } = window.location
+
+  const previewDomains = ['.nave.dev.br', '.pages.dev']
+
+  return previewDomains.some(domain => hostname.endsWith(domain))
+}
+
+function isValidDomain () {
+  return isLocalDevelopment() || isNaveOrPreviewDomain()
 }
