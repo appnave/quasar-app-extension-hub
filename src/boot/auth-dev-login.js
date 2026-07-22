@@ -59,18 +59,10 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
  * Envia o accessToken para a janela que solicitou.
  */
 function handleAccessTokenRequest ({ accessToken }) {
-  const envs = ['development', 'temporary']
+  const isProduction = process.env.ENVIRONMENT === 'production'
 
-  /**
-   * - É necessário ter a env "development" ou "temporary",
-   * - validar se a janela foi aberta por outra janela (window.opener),
-   * - se a url é localhost, domínio da nave(.nave.dev.br) ou domínio de preview (.pages.dev)
-   */
-  const hasRedirectRequestHandler = (
-    envs.includes(process.env.ENVIRONMENT) &&
-    window.opener &&
-    isValidDomain()
-  )
+  // Validar se a janela foi aberta por outra janela (window.opener) e não é produção.
+  const hasRedirectRequestHandler = window.opener && !isProduction
 
   if (!hasRedirectRequestHandler) return
 
@@ -95,19 +87,4 @@ function handleAccessTokenRequest ({ accessToken }) {
      */
     window.opener.postMessage(payload, requestAccessTokenOrigin)
   }
-}
-
-/**
- * Valida se é um domínio da nave ou ambiente de preview.
- */
-function isNaveOrPreviewDomain () {
-  const { hostname } = window.location
-
-  const previewDomains = ['.nave.dev.br', '.pages.dev']
-
-  return previewDomains.some(domain => hostname.endsWith(domain))
-}
-
-function isValidDomain () {
-  return isLocalDevelopment() || isNaveOrPreviewDomain()
 }
