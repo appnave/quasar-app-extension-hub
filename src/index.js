@@ -45,7 +45,7 @@ export default async function (api) {
     boots.push(usePinia ? 'auth-pinia' : 'auth-vuex')
 
     boots.forEach(boot => {
-      quasar.boot.push(`~@bildvitta/quasar-app-extension-hub/src/boot/${boot}.js`)
+      quasar.boot.push(`~@appnave/quasar-app-extension-hub/src/boot/${boot}.js`)
     })
 
     // Plugins
@@ -68,7 +68,7 @@ export default async function (api) {
   })
 
   const alias = {
-    hub: api.resolve.app('node_modules/@bildvitta/quasar-app-extension-hub/src/globals'),
+    hub: api.resolve.app('node_modules/@appnave/quasar-app-extension-hub/src/globals'),
     hubConfig: aliasPath
   }
 

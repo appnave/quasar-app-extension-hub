@@ -2,6 +2,22 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## v3.4.0-beta.1
+- Modificado página de `AuthDevLogin` pra ficar mais amigável.
+- `auth-dev-login.js`: Modificado lógica para ter fluxo de dev login em ambientes locais e de preview.
+
+### Corrigido
+- Corrigido `auth-pinia` onde a instância da store da forma que estava causava um erro no console.
+
+## v3.4.0-beta.0
+> **BROKEN** - Não utilizar. Lançada incorretamente a partir da `main`. Use `v3.4.0-beta.1`.
+
+### Modificado
+- Modificado página de `AuthDevLogin` pra ficar mais amigável.
+
+### Corrigido
+- Corrigido `auth-pinia` onde a instância da store da forma que estava causava um erro no console.
+
 ## 3.3.0-beta.0
 ### Adicionado
 - Adicionado suporte para vite.

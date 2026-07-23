@@ -14,8 +14,10 @@ export default ({ router, urlPath }) => {
  * Adiciona a rota de redirecionamento para o login de desenvolvimento.
  */
 function setRedirectURL ({ accessToken, router, urlPath }) {
+  const isProduction = process.env.ENVIRONMENT === 'production'
+
   // se não for localhost ou preview, ou se já tiver um accessToken, não faz nada.
-  if (!isLocalhostOrPreviewDomain() || accessToken) return
+  if (isProduction || accessToken) return
 
   const mode = isLocalDevelopment() ? 'localhost' : 'preview'
 
@@ -24,12 +26,18 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
 
   // a rota só é adicionada caso passe por todas as condições acima.
   router.addRoute({
-    name: 'AuthDevLogin',
-    path: '/auth/dev/login',
-    component: () => import('../pages/auth/AuthDevLogin.vue'),
-    meta: {
-      title: 'Login de desenvolvimento'
-    }
+    path: '/auth/dev',
+    component: () => import('../layouts/Hub.vue'),
+    children: [
+      {
+        name: 'AuthDevLogin',
+        path: 'login',
+        component: () => import('../pages/auth/AuthDevLogin.vue'),
+        meta: {
+          title: 'Login de desenvolvimento'
+        }
+      }
+    ]
   })
 
   router.beforeEach((to, _from, next) => {
@@ -51,17 +59,10 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
  * Envia o accessToken para a janela que solicitou.
  */
 function handleAccessTokenRequest ({ accessToken }) {
-  const envs = ['development', 'temporary']
+  const isProduction = process.env.ENVIRONMENT === 'production'
 
-  /**
-   * É apenas para ambientes de desenvolvimento e temporários e se a janela foi
-   * aberta por outra janela (window.opener) e não é localhost ou preview.
-   */
-  const hasRedirectRequestHandler = (
-    envs.includes(process.env.ENVIRONMENT) &&
-    window.opener &&
-    !isLocalhostOrPreviewDomain()
-  )
+  // Validar se a janela foi aberta por outra janela (window.opener) e não é produção.
+  const hasRedirectRequestHandler = window.opener && !isProduction
 
   if (!hasRedirectRequestHandler) return
 
@@ -86,19 +87,4 @@ function handleAccessTokenRequest ({ accessToken }) {
      */
     window.opener.postMessage(payload, requestAccessTokenOrigin)
   }
-}
-
-/**
- * Preview de vercel ou cloudflare pages
- */
-function isPreviewDomain () {
-  const { hostname } = window.location
-
-  const previewDomains = ['.vercel.app', '.pages.dev']
-
-  return previewDomains.some(domain => hostname.endsWith(domain))
-}
-
-function isLocalhostOrPreviewDomain () {
-  return isLocalDevelopment() || isPreviewDomain()
 }
