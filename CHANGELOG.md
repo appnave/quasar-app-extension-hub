@@ -2,6 +2,10 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## v3.4.0-beta.2
+### Removido
+- Removido suporte ao webpack.
+
 ## v3.4.0-beta.1
 ### Modificado
 - Modificado página de `AuthDevLogin` pra ficar mais amigável.
