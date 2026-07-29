@@ -1,5 +1,6 @@
 import setAuthorizationHeader from '../helpers/set-authorization-header.js'
 import setMessageEvent from '../helpers/set-message-event.js'
+import { getEnv } from '../helpers/env.js'
 import { hasString } from '../helpers/string.js'
 import { replaceAccessToken, replaceUser } from '../helpers/mutations.js'
 import hubConfig from '../shared/default-hub-config.js'
@@ -56,7 +57,7 @@ const actions = {
     try {
       const { data } = await axios.get('/users/me', {
         params: {
-          version: process.env.ME_VERSION
+          version: getEnv('ME_VERSION')
         }
       })
 

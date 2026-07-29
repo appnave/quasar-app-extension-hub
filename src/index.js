@@ -63,7 +63,7 @@ export default async function (api) {
   }
 
   if (api.hasVite) {
-    api.compatibleWith('@quasar/app-vite', '^2.0.0')
+    api.compatibleWith('@quasar/app-vite', '^2.0.0 || ^3.0.0')
 
     api.extendViteConf(viteConf => {
       Object.assign(viteConf.resolve.alias, alias)
