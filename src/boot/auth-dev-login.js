@@ -2,7 +2,6 @@ import hubConfig from 'hubConfig'
 
 import { LocalStorage } from 'quasar'
 import { isLocalDevelopment } from 'asteroid'
-import { getEnv } from '../helpers/env.js'
 
 export default ({ router, urlPath }) => {
   const accessToken = LocalStorage.getItem('accessToken')
@@ -15,7 +14,7 @@ export default ({ router, urlPath }) => {
  * Adiciona a rota de redirecionamento para o login de desenvolvimento.
  */
 function setRedirectURL ({ accessToken, router, urlPath }) {
-  const isProduction = getEnv('ENVIRONMENT') === 'production'
+  const isProduction = import.meta.env.ENVIRONMENT === 'production'
 
   // se não for localhost ou preview, ou se já tiver um accessToken, não faz nada.
   if (isProduction || accessToken) return
@@ -60,7 +59,7 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
  * Envia o accessToken para a janela que solicitou.
  */
 function handleAccessTokenRequest ({ accessToken }) {
-  const isProduction = getEnv('ENVIRONMENT') === 'production'
+  const isProduction = import.meta.env.ENVIRONMENT === 'production'
 
   // Validar se a janela foi aberta por outra janela (window.opener) e não é produção.
   const hasRedirectRequestHandler = window.opener && !isProduction
