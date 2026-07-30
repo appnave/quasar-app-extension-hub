@@ -35,7 +35,7 @@ export default async function (api) {
      * - Estiver utilizando a versão "2" do Quasar.
      */
     if (
-      process.env.ENVIRONMENT !== 'production' &&
+      import.meta.env.ENVIRONMENT !== 'production' &&
       hubConfig?.hasAsteroid &&
       isLatestQuasar
     ) {
