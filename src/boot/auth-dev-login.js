@@ -40,18 +40,18 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
     ]
   })
 
-  router.beforeEach((to, _from, next) => {
+  router.beforeEach((to) => {
     // rota vez que o usuário muda de rota recupera o accessToken atualizado.
     const refreshedAccessToken = LocalStorage.getItem('accessToken')
 
     // se a rota atual for a de login ou se tem accessToken, redireciona.
-    if (to.name === 'AuthDevLogin' || refreshedAccessToken) return next()
+    if (to.name === 'AuthDevLogin' || refreshedAccessToken) return true
 
     /**
      * redireciona para a rota de login de desenvolvimento passando a rota atual
      * como query string no "from".
      */
-    next({ name: 'AuthDevLogin', query: { from: urlPath, ...to.query } })
+    return { name: 'AuthDevLogin', query: { from: urlPath, ...to.query } }
   })
 }
 
