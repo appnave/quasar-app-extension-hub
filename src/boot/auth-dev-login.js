@@ -15,9 +15,10 @@ export default ({ router, urlPath }) => {
  */
 function setRedirectURL ({ accessToken, router, urlPath }) {
   const isProduction = process.env.ENVIRONMENT === 'production'
+  const isDevelopment = process.env.ENVIRONMENT === 'development'
 
-  // se não for localhost ou preview, ou se já tiver um accessToken, não faz nada.
-  if (isProduction || accessToken) return
+  // se for produção, develop ou se já tiver um accessToken, não faz nada.
+  if (isProduction || isDevelopment || accessToken) return
 
   const mode = isLocalDevelopment() ? 'localhost' : 'preview'
 
