@@ -2,7 +2,7 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## 3.4.0-beta.2
+## 3.4.0-beta.3
 ### Corrigido
 - Corrigido validação para não exibir página de login automático em ambientes de develop.
 
