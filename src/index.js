@@ -55,16 +55,6 @@ export default async function (api) {
     ]
 
     plugins.forEach(plugin => quasar.framework.plugins.push(plugin))
-
-    // Transpilação de arquivos!
-    if (api.hasWebpack) {
-      const transpileTarget = (
-        quasar.build.webpackTranspileDependencies || // q/app-webpack >= v4
-        quasar.build.transpileDependencies // q/app-webpack v3
-      )
-
-      transpileTarget.push(/quasar-app-extension-hub[\\/]src[\\/]boot/)
-    }
   })
 
   const alias = {
@@ -73,7 +63,7 @@ export default async function (api) {
   }
 
   if (api.hasVite) {
-    api.compatibleWith('@quasar/app-vite', '^2.0.0')
+    api.compatibleWith('@quasar/app-vite', '^2.0.0 || ^3.0.0')
 
     api.extendViteConf(viteConf => {
       Object.assign(viteConf.resolve.alias, alias)
@@ -88,6 +78,4 @@ export default async function (api) {
 
     return
   }
-
-  api.extendWebpack(webpack => Object.assign(webpack.resolve.alias, alias))
 }

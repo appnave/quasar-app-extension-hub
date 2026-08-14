@@ -2,9 +2,18 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## Não publicado
+### Modificado
+- Alterado uso do `next` com a nova atualização do `vue-router`.
+- Alterado uso das `envs` para usar `import.meta` ao invés do `process.env`.
+
 ## 3.4.0-beta.3
 ### Corrigido
 - Corrigido validação para não exibir página de login automático em ambientes de develop.
+
+## v3.4.0-beta.2
+### Removido
+- Removido suporte ao webpack.
 
 ## v3.4.0-beta.1
 ### Modificado
@@ -38,7 +47,7 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 
 ### Adicionado
 - Adicionado recurso para fazer login automático para desenvolvimento, somente disponível com o uso do `asteroid`, mediante a env `ENVIRONMENT !== 'production'`.
-- Adicionado recurso para conseguir personalizar e adicionar `defaultFilters` com base no que vem do `hub.config`. 
+- Adicionado recurso para conseguir personalizar e adicionar `defaultFilters` com base no que vem do `hub.config`.
 
 ### Corrigido
 - Corrigido permissões para serem `camelCase`.
@@ -58,7 +67,7 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 
 ## 3.2.0-beta.2 - 26-03-2025
 ### Adicionado
-- Adicionado recurso para conseguir personalizar e adicionar `defaultFilters` com base no que vem do `hub.config`. 
+- Adicionado recurso para conseguir personalizar e adicionar `defaultFilters` com base no que vem do `hub.config`.
 
 ## 3.2.0-beta.1 - 28-02-2025
 ### Corrigido
@@ -289,7 +298,6 @@ Versão estável lançada.
 Versão estável lançada.
 
 ## [2.0.0-beta.1] - 11-03-2022
-
 > :warning: Nesta versão existem **Breaking Changes** pelo fato da troca de versão do vue, porém não há **nenhuma alteração em como utilizar** esta extensão.
 
 ### Modificado

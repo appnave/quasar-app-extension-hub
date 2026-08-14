@@ -56,7 +56,7 @@ const actions = {
     try {
       const { data } = await axios.get('/users/me', {
         params: {
-          version: process.env.ME_VERSION
+          version: import.meta.env.ME_VERSION
         }
       })
 
