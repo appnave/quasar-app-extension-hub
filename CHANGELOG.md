@@ -7,6 +7,10 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 - Alterado uso do `next` com a nova atualização do `vue-router`.
 - Alterado uso das `envs` para usar `import.meta` ao invés do `process.env`.
 
+## 3.4.0-beta.3
+### Corrigido
+- Corrigido validação para não exibir página de login automático em ambientes de develop.
+
 ## v3.4.0-beta.2
 ### Removido
 - Removido suporte ao webpack.
