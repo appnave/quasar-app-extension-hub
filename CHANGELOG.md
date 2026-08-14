@@ -2,10 +2,13 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## 3.4.0-beta.4
+## 3.4.0-beta.5
 ### Modificado
 - Alterado uso do `next` com a nova atualização do `vue-router`.
 - Alterado uso das `envs` para usar `import.meta` ao invés do `process.env`.
+
+## 3.4.0-beta.4
+> **REMOVIDA** - Publicada por engano e despublicada do npm (`npm unpublish`). Este número de versão não pode ser reutilizado (o npm bloqueia permanentemente a republicação de uma versão removida). Use `v3.4.0-beta.5`.
 
 ## 3.4.0-beta.3
 ### Corrigido
