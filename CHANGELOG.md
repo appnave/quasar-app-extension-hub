@@ -2,7 +2,7 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
-## Não publicado
+## 3.4.0-beta.4
 ### Modificado
 - Alterado uso do `next` com a nova atualização do `vue-router`.
 - Alterado uso das `envs` para usar `import.meta` ao invés do `process.env`.
