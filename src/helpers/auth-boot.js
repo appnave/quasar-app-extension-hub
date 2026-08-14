@@ -56,7 +56,7 @@ export const interceptAxios = ({ router, quasar, storeConfig = {} }) => {
 export const beforeEach = ({ router, quasar, isPinia, store }) => {
   let productName
 
-  router.beforeEach(async (to, from, next) => {
+  router.beforeEach(async (to, from) => {
     productName = productName || document.title
 
     // Routes that does not requires authentication.
@@ -66,7 +66,7 @@ export const beforeEach = ({ router, quasar, isPinia, store }) => {
       document.title = item.meta.title || productName
     })
 
-    if (!requiresAuth) return next()
+    if (!requiresAuth) return true
 
     const hasAccessToken = isPinia ? store.hasAccessToken : store.getters['hub/hasAccessToken']
     const hasUser = isPinia ? store.hasUser : store.getters['hub/hasUser']
@@ -85,7 +85,6 @@ export const beforeEach = ({ router, quasar, isPinia, store }) => {
 
         isPinia ? await store.getUser() : await store.dispatch('hub/getUser')
 
-
         /**
          * Setado meta para indicar que a API do /me foi chamada.
          * Necessário para resolver o problema de chamada duplicada ao entrar na rota "/".
@@ -102,10 +101,10 @@ export const beforeEach = ({ router, quasar, isPinia, store }) => {
     }
 
     // Is user authenticated?
-    return next(hasAccessToken ? true : {
+    return hasAccessToken ? true : {
       name: 'Hub',
       query: { url: to.fullPath }
-    })
+    }
   })
 }
 

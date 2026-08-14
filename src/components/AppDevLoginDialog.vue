@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+import { QasDialog } from 'asteroid'
+
 defineOptions({ name: 'AppDevLoginDialog' })
 
 const props = defineProps({
@@ -40,9 +42,7 @@ const emit = defineEmits(['try-again'])
 const environmentLabel = props.environment === 'development' ? 'desenvolvimento' : 'temporário'
 
 const dialogProps = {
-  card: {
-    title: 'Login automático não disponível'
-  },
+  title: 'Login automático não disponível',
 
   ok: {
     label: `Acessar ${environmentLabel}`,

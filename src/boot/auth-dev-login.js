@@ -14,8 +14,11 @@ export default ({ router, urlPath }) => {
  * Adiciona a rota de redirecionamento para o login de desenvolvimento.
  */
 function setRedirectURL ({ accessToken, router, urlPath }) {
-  // se não for localhost ou preview, ou se já tiver um accessToken, não faz nada.
-  if (!isLocalhostOrPreviewDomain() || accessToken) return
+  const isProduction = import.meta.env.ENVIRONMENT === 'production'
+  const isDevelopment = import.meta.env.ENVIRONMENT === 'development'
+
+  // se for produção, develop ou se já tiver um accessToken, não faz nada.
+  if (isProduction || isDevelopment || accessToken) return
 
   const mode = isLocalDevelopment() ? 'localhost' : 'preview'
 
@@ -24,26 +27,32 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
 
   // a rota só é adicionada caso passe por todas as condições acima.
   router.addRoute({
-    name: 'AuthDevLogin',
-    path: '/auth/dev/login',
-    component: () => import('../pages/auth/AuthDevLogin.vue'),
-    meta: {
-      title: 'Login de desenvolvimento'
-    }
+    path: '/auth/dev',
+    component: () => import('../layouts/Hub.vue'),
+    children: [
+      {
+        name: 'AuthDevLogin',
+        path: 'login',
+        component: () => import('../pages/auth/AuthDevLogin.vue'),
+        meta: {
+          title: 'Login de desenvolvimento'
+        }
+      }
+    ]
   })
 
-  router.beforeEach((to, _from, next) => {
+  router.beforeEach((to) => {
     // rota vez que o usuário muda de rota recupera o accessToken atualizado.
     const refreshedAccessToken = LocalStorage.getItem('accessToken')
 
     // se a rota atual for a de login ou se tem accessToken, redireciona.
-    if (to.name === 'AuthDevLogin' || refreshedAccessToken) return next()
+    if (to.name === 'AuthDevLogin' || refreshedAccessToken) return true
 
     /**
      * redireciona para a rota de login de desenvolvimento passando a rota atual
      * como query string no "from".
      */
-    next({ name: 'AuthDevLogin', query: { from: urlPath, ...to.query } })
+    return { name: 'AuthDevLogin', query: { from: urlPath, ...to.query } }
   })
 }
 
@@ -51,17 +60,10 @@ function setRedirectURL ({ accessToken, router, urlPath }) {
  * Envia o accessToken para a janela que solicitou.
  */
 function handleAccessTokenRequest ({ accessToken }) {
-  const envs = ['development', 'temporary']
+  const isProduction = import.meta.env.ENVIRONMENT === 'production'
 
-  /**
-   * É apenas para ambientes de desenvolvimento e temporários e se a janela foi
-   * aberta por outra janela (window.opener) e não é localhost ou preview.
-   */
-  const hasRedirectRequestHandler = (
-    envs.includes(process.env.ENVIRONMENT) &&
-    window.opener &&
-    !isLocalhostOrPreviewDomain()
-  )
+  // Validar se a janela foi aberta por outra janela (window.opener) e não é produção.
+  const hasRedirectRequestHandler = window.opener && !isProduction
 
   if (!hasRedirectRequestHandler) return
 
@@ -86,19 +88,4 @@ function handleAccessTokenRequest ({ accessToken }) {
      */
     window.opener.postMessage(payload, requestAccessTokenOrigin)
   }
-}
-
-/**
- * Preview de vercel ou cloudflare pages
- */
-function isPreviewDomain () {
-  const { hostname } = window.location
-
-  const previewDomains = ['.vercel.app', '.pages.dev']
-
-  return previewDomains.some(domain => hostname.endsWith(domain))
-}
-
-function isLocalhostOrPreviewDomain () {
-  return isLocalDevelopment() || isPreviewDomain()
 }

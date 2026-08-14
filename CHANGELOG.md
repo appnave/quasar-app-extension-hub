@@ -2,6 +2,47 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## 3.4.0-beta.5
+### Modificado
+- Alterado uso do `next` com a nova atualização do `vue-router`.
+- Alterado uso das `envs` para usar `import.meta` ao invés do `process.env`.
+
+## 3.4.0-beta.4
+> **REMOVIDA** - Publicada por engano e despublicada do npm (`npm unpublish`). Este número de versão não pode ser reutilizado (o npm bloqueia permanentemente a republicação de uma versão removida). Use `v3.4.0-beta.5`.
+
+## 3.4.0-beta.3
+### Corrigido
+- Corrigido validação para não exibir página de login automático em ambientes de develop.
+
+## v3.4.0-beta.2
+### Removido
+- Removido suporte ao webpack.
+
+## v3.4.0-beta.1
+### Modificado
+- Modificado página de `AuthDevLogin` pra ficar mais amigável.
+- `auth-dev-login.js`: Modificado lógica para ter fluxo de dev login em ambientes locais e de preview.
+
+### Corrigido
+- Corrigido `auth-pinia` onde a instância da store da forma que estava causava um erro no console.
+
+## v3.4.0-beta.0
+> **BROKEN** - Não utilizar. Lançada incorretamente a partir da `main`. Use `v3.4.0-beta.1`.
+
+### Modificado
+- Modificado página de `AuthDevLogin` pra ficar mais amigável.
+
+### Corrigido
+- Corrigido `auth-pinia` onde a instância da store da forma que estava causava um erro no console.
+
+## 3.3.0-beta.0
+### Adicionado
+- Adicionado suporte para vite.
+- Adiciono a store hub ao Pinia globalmente para não ser necessário fazer manual nos produtos, verificar e remover nos produtos caso exista.
+
+### Modificado
+- Modificações necessárias para adicionar suporte ao vite.
+
 ## 3.2.0 - 16-09-2025
 ## BREAKING CHANGES
 - Certifique-se que exista a env `ENVIRONMENT` setada com o valor `production` no ambiente de produção para não adicionar os recursos de login de desenvolvimento.
@@ -9,7 +50,7 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 
 ### Adicionado
 - Adicionado recurso para fazer login automático para desenvolvimento, somente disponível com o uso do `asteroid`, mediante a env `ENVIRONMENT !== 'production'`.
-- Adicionado recurso para conseguir personalizar e adicionar `defaultFilters` com base no que vem do `hub.config`. 
+- Adicionado recurso para conseguir personalizar e adicionar `defaultFilters` com base no que vem do `hub.config`.
 
 ### Corrigido
 - Corrigido permissões para serem `camelCase`.
@@ -29,7 +70,7 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 
 ## 3.2.0-beta.2 - 26-03-2025
 ### Adicionado
-- Adicionado recurso para conseguir personalizar e adicionar `defaultFilters` com base no que vem do `hub.config`. 
+- Adicionado recurso para conseguir personalizar e adicionar `defaultFilters` com base no que vem do `hub.config`.
 
 ## 3.2.0-beta.1 - 28-02-2025
 ### Corrigido
@@ -260,7 +301,6 @@ Versão estável lançada.
 Versão estável lançada.
 
 ## [2.0.0-beta.1] - 11-03-2022
-
 > :warning: Nesta versão existem **Breaking Changes** pelo fato da troca de versão do vue, porém não há **nenhuma alteração em como utilizar** esta extensão.
 
 ### Modificado
