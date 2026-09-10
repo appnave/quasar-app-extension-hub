@@ -2,6 +2,10 @@
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versioning.
 
+## 3.4.0-beta.6
+### Adicionado
+- Adicionado evento `setUser` no `set-message-event.js` para setar o usuário na store.
+
 ## 3.4.0-beta.5
 ### Modificado
 - Alterado uso do `next` com a nova atualização do `vue-router`.
