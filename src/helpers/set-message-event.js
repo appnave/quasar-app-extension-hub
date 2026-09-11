@@ -12,7 +12,6 @@ export default (stateData = () => {}) => {
     }
 
     if (data.type === 'setUser') {
-      console.log('cai no setUser')
       if (!hubConfig.storeAdapter === 'pinia') return
 
       import('../store/pinia-hub-store.js').then(({ default: piniaHubStore }) => {
