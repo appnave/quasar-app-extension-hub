@@ -19,7 +19,16 @@ export default ({ router, app, Vue }) => {
    * Registra os eventos de postMessage do hub.
    * toRaw: estado plano, pois o postMessage não clona o Proxy reativo.
    */
-  setMessageEvent(() => toRaw(store.$state))
+  setMessageEvent(
+    () => toRaw(store.$state),
+    
+    // custom events
+    data => {
+      if (data.type === 'setUser') {
+        piniaHubStore().setUser(data.user)
+      }
+    }
+  )
 
   const { quasar } = getGlobalVariables({ app, Vue })
 
