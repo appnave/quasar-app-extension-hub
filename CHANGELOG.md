@@ -6,6 +6,9 @@ O formato é baseado em Keep a Changelog, e este projeto adere ao Semantic Versi
 ### Adicionado
 - Adicionado evento `setUser` no `set-message-event.js` para setar o usuário na store.
 
+### Modificado
+- Modificado boot `auth-pinia.js` e `auth-vuex.js` para adicionar os listeners no boot ao invés de diretamente na store, pois causava duplicidade de listener no vite.
+
 ## 3.4.0-beta.5
 ### Modificado
 - Alterado uso do `next` com a nova atualização do `vue-router`.

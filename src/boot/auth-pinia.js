@@ -1,6 +1,8 @@
 import piniaHubStore from '../store/pinia-hub-store.js'
 import can from '../helpers/can.js'
+import setMessageEvent from '../helpers/set-message-event.js'
 
+import { toRaw } from 'vue'
 import { DefineGlobalPiniaStore } from '@bildvitta/store-adapter'
 
 import {
@@ -12,6 +14,12 @@ import {
 
 export default ({ router, app, Vue }) => {
   const store = piniaHubStore()
+
+  /**
+   * Registra os eventos de postMessage do hub.
+   * toRaw: estado plano, pois o postMessage não clona o Proxy reativo.
+   */
+  setMessageEvent(() => toRaw(store.$state))
 
   const { quasar } = getGlobalVariables({ app, Vue })
 
