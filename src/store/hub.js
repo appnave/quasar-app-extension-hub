@@ -1,5 +1,4 @@
 import setAuthorizationHeader from '../helpers/set-authorization-header.js'
-import setMessageEvent from '../helpers/set-message-event.js'
 import { hasString } from '../helpers/string.js'
 import { replaceAccessToken, replaceUser } from '../helpers/mutations.js'
 import hubConfig from '../shared/default-hub-config.js'
@@ -119,9 +118,6 @@ const actions = {
     replaceUser.call(this, { user, isPinia })
   }
 }
-
-// Listen access token requests.
-setMessageEvent(stateData)
 
 export default {
   ...(!isPinia && { namespaced: true }),
