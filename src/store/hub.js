@@ -1,21 +1,14 @@
 import setAuthorizationHeader from '../helpers/set-authorization-header.js'
 import { hasString } from '../helpers/string.js'
 import { replaceAccessToken, replaceUser } from '../helpers/mutations.js'
-import hubConfig from '../shared/default-hub-config.js'
-
-import { getActionPayload } from '@bildvitta/store-adapter'
 
 import axios from 'axios'
 import { LocalStorage } from 'quasar'
-
-const { storeAdapter } = hubConfig
-const isPinia = storeAdapter === 'pinia'
 
 // Revive access token from cache.
 const accessToken = LocalStorage.getItem('accessToken') || ''
 setAuthorizationHeader(accessToken)
 
-// Vuex | Pinia module.
 const stateData = () => {
   return {
     accessToken,
@@ -31,22 +24,22 @@ const getters = {
 
 const actions = {
   clear () {
-    replaceAccessToken.call(this, { isPinia })
-    replaceUser.call(this, { isPinia })
+    replaceAccessToken.call(this)
+    replaceUser.call(this)
   },
 
-  async callback (...args) {
-    const { code, state } = getActionPayload(isPinia, ...args)
+  async callback (payload = {}) {
+    const { code, state } = payload
 
     try {
       const { data } = await axios.get('/auth/callback', {
         params: { code, state }
       })
 
-      replaceAccessToken.call(this, { accessToken: data.accessToken, isPinia })
+      replaceAccessToken.call(this, { accessToken: data.accessToken })
       return data
     } catch (error) {
-      replaceAccessToken.call(this, { isPinia })
+      replaceAccessToken.call(this)
       throw error
     }
   },
@@ -59,16 +52,16 @@ const actions = {
         }
       })
 
-      replaceUser.call(this, { user: data.result, isPinia })
+      replaceUser.call(this, { user: data.result })
       return data.result
     } catch (error) {
-      replaceUser.call(this, { isPinia })
+      replaceUser.call(this)
       throw error
     }
   },
 
-  async login (...args) {
-    const { url } = getActionPayload(isPinia, ...args)
+  async login (payload = {}) {
+    const { url } = payload
 
     const { data } = await axios.get('/auth/login', {
       params: { url }
@@ -77,8 +70,8 @@ const actions = {
     return data.loginUrl
   },
 
-  async logout (...args) {
-    const { url } = getActionPayload(isPinia, ...args)
+  async logout (payload = {}) {
+    const { url } = payload
 
     const { data } = await axios.get('/auth/logout', {
       params: { url }
@@ -90,11 +83,11 @@ const actions = {
   async refresh () {
     try {
       const { data } = await axios.get('/auth/refresh')
-      
-      replaceAccessToken.call(this, { accessToken: data.accessToken, isPinia })
+
+      replaceAccessToken.call(this, { accessToken: data.accessToken })
       return data
     } catch (error) {
-      replaceAccessToken.call(this, { isPinia })
+      replaceAccessToken.call(this)
       throw error
     }
   },
@@ -108,20 +101,16 @@ const actions = {
     }
   },
 
-  setAccessToken (...args) {
-    const accessToken = getActionPayload(isPinia, ...args)
-    replaceAccessToken.call(this, { accessToken, isPinia })
+  setAccessToken (payload) {
+    replaceAccessToken.call(this, { accessToken: payload })
   },
 
-  setUser (...args) {
-    const user = getActionPayload(isPinia, ...args)
-    replaceUser.call(this, { user, isPinia })
+  setUser (payload) {
+    replaceUser.call(this, { user: payload })
   }
 }
 
 export default {
-  ...(!isPinia && { namespaced: true }),
-
   state: stateData,
   getters,
   actions

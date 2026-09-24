@@ -1,22 +1,18 @@
 import { LocalStorage } from 'quasar'
 import setAuthorizationHeader from './set-authorization-header.js'
-import { getStateFromAction } from '@bildvitta/store-adapter'
 import postMessage from './post-message.js'
 import { camelize } from 'humps'
 import hubConfig from 'hubConfig'
 
 // mutations functions
-export function replaceAccessToken ({ accessToken = '', isPinia }) {
+export function replaceAccessToken ({ accessToken = '' } = {}) {
   setAuthorizationHeader(accessToken)
   LocalStorage.set('accessToken', accessToken)
 
-  const state = getStateFromAction.call(this, { isPinia, resource: 'hub' })
-  state.accessToken = accessToken
+  this.accessToken = accessToken
 }
 
-export function replaceUser ({ user = {}, isPinia }) {
-  const state = getStateFromAction.call(this, { isPinia, resource: 'hub' })
-
+export function replaceUser ({ user = {} } = {}) {
   for (const key in user.companyPermissions) {
     user.companyPermissions[key] = user.companyPermissions[key].map(permission => {
       return camelize(permission)
@@ -25,7 +21,7 @@ export function replaceUser ({ user = {}, isPinia }) {
 
   LocalStorage.set('user', user)
 
-  state.user = user
+  this.user = user
 
   postMessage('updateUser', { user })
 
@@ -50,7 +46,7 @@ export function replaceUser ({ user = {}, isPinia }) {
     const { defaultFilters: defaultFiltersConfig = {} } = hubConfig
 
     const defaultFilters = {}
-    
+
     // Loopa as chaves recebidas de configuração e seta o primeiro item como default.
     for (const key in defaultFiltersConfig) {
       if (!user[key]) continue
